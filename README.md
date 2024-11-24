@@ -11,7 +11,7 @@ This is a prototype for the recipe suggestion feature for the Student Smart Home
    ```bash
    cd SEPP-Project
    ```
-3. Install dependencies (if applicable):
+3. Install dependencies:
    ```bash
    npm install
    ```
