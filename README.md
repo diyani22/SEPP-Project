@@ -21,7 +21,7 @@ This is a prototype for the recipe suggestion feature for the Student Smart Home
    ```
 
 ## Contributing
-To contribute to this repository, create a new branch, commit your changes and push to your branch. Finally, create a pull request.
+To contribute to this repository, create a new branch (naming the branch on the feature being worked on/added), commit your changes and push to your branch. Finally, create a pull request. When creating a pull request, assign one or more team members to review the code.
 
 ## Team Members
 - [Diya] (https://github.com/diyani22)
