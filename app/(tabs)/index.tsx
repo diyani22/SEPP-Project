@@ -1,12 +1,12 @@
 import React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
-import Suggestions from '../../screens/Suggestions'; // Adjust the path if needed
+import Home from '../../screens/Home'; // Adjust the path if needed
 
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
       {/* Replace the default content with your RecipeSuggestionPage */}
-      <Suggestions />
+      <Home />
     </View>
   );
 }
