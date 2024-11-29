@@ -1,6 +1,6 @@
 # SEPP-Project
 # SSH - Recipe Suggestion Feature
-This is a prototype for the recipe suggestion feature for the Student Smart Homes organisation as part of assignment 2 for the Softare Engineering and Professional Practice module.
+This is a prototype for the recipe suggestion feature for the Student Smart Homes organisation as part of assignment 2 for the Softare Engineering and Professional Practice module.!!!
 
 ## Setup and Installation
 1. Clone the repository:
