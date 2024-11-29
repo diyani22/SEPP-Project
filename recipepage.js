@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 
-const Suggestions = () => {
+const Recipe = () => {
   const sampleRecipes = [
     {
       id: '1',
@@ -95,4 +95,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Suggestions;
+export default Recipe;
