@@ -1,24 +1,42 @@
 import React from 'react';
-import { View, Text, TextInput, Button, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Button } from 'react-native';
 
 const Suggestions = () => {
   const sampleRecipes = [
-    { id: '1', name: 'Pasta Primavera', matchPercentage: '90%' },
-    { id: '2', name: 'Vegetable Stir Fry', matchPercentage: '85%' },
-    { id: '3', name: 'Chicken Curry', matchPercentage: '85%' },
-    { id: '4', name: 'Margarita Pizza', matchPercentage: '80%' },
-    { id: '5', name: 'Beef Tacos', matchPercentage: '80%' },
-    { id: '6', name: 'Tomato Soup', matchPercentage: '70%' },
-    { id: '7', name: 'Grilled Cheese Sandwich', matchPercentage: '65%' },
-    { id: '8', name: 'Avocado Toast', matchPercentage: '50%' },
-    { id: '9', name: 'Shrimp Scampi', matchPercentage: '50%' },
-    { id: '10', name: 'Caesar Salad', matchPercentage: '20%' },
-    { id: '11', name: 'Caesar Salad', matchPercentage: '20%' },
-    { id: '12', name: 'Spaghetti Bolognese', matchPercentage: '15%' },
-    { id: '13', name: 'Vegetarian Chili', matchPercentage: '15%' },
-    { id: '14', name: 'Pan-Seared Salmon', matchPercentage: '10%' },
-    { id: '15', name: 'Breakfast Burrito', matchPercentage: '0%' }
+    { id: '1', name: 'Pasta Primavera', ingredients: ['Pasta', 'Tomatoes', 'Broccoli', 'Olive Oil'] },
+    { id: '2', name: 'Vegetable Stir Fry', ingredients: ['Noodles', 'Onion', 'Garlic', 'Broccoli', 'Pepper'] },
+    { id: '3', name: 'Chicken Curry', ingredients: ['Chicken', 'Curry Powder', 'Onion', 'Garlic', 'Tomatoes'] },
+    { id: '4', name: 'Margarita Pizza', ingredients: ['Pizza Dough', 'Tomato Sauce', 'Mozzarella'] },
+    { id: '5', name: 'Beef Tacos', ingredients: ['Beef', 'Taco Shells', 'Lettuce', 'Cheese'] },
+    { id: '6', name: 'Tomato Soup', ingredients: ['Tomatoes', 'Onion', 'Garlic', 'Cream'] },
+    { id: '7', name: 'Grilled Cheese Sandwich', ingredients: ['Bread', 'Cheese', 'Butter'] },
+    { id: '8', name: 'Avocado Toast', ingredients: ['Avocado', 'Bread', 'Salt', 'Pepper'] },
+    { id: '9', name: 'Shrimp Scampi', ingredients: ['Shrimp', 'Garlic', 'Butter', 'Pasta'] },
+    { id: '10', name: 'Caesar Salad', ingredients: ['Lettuce', 'Croutons', 'Caesar Dressing', 'Parmesan'] },
+    { id: '11', name: 'Vegetarian Chili', ingredients: ['Beans', 'Tomatoes', 'Onion', 'Garlic', 'Chili Powder'] },
+    { id: '12', name: 'Pan-Seared Salmon', ingredients: ['Salmon', 'Lemon', 'Butter', 'Garlic'] },
+    { id: '13', name: 'Breakfast Burrito', ingredients: ['Tortilla', 'Eggs', 'Cheese', 'Sausage'] },
+    { id: '14', name: 'Spaghetti Bolognese', ingredients: ['Spaghetti', 'Tomato Sauce', 'Ground Beef', 'Garlic', 'Onion'] },
+    { id: '15', name: 'Caprese Salad', ingredients: ['Tomatoes', 'Mozzarella', 'Basil', 'Olive Oil'] },
   ];
+
+  const fridgeItems = ['Tomatoes', 'Onion', 'Garlic', 'Mozzarella', 'Pasta', 'Olive Oil', 'Cheese', 'Bread'];
+
+  // Calculate match percentage for each recipe
+  const calculateMatchPercentage = (recipe) => {
+    const total = recipe.ingredients.length;
+    const have = recipe.ingredients.filter((ingredient) => fridgeItems.includes(ingredient)).length;
+    return Math.round((have / total) * 100); // Rounded to nearest integer
+  };
+
+  // Filter and sort recipes
+  const filteredAndSortedRecipes = sampleRecipes
+    .map((recipe) => ({
+      ...recipe,
+      matchPercentage: calculateMatchPercentage(recipe),
+    }))
+    .filter((recipe) => recipe.matchPercentage > 0) // Only include recipes with >0% match
+    .sort((a, b) => b.matchPercentage - a.matchPercentage); // Sort descending by match percentage
 
   return (
     <View style={styles.container}>
@@ -27,28 +45,26 @@ const Suggestions = () => {
       {/* Recipe List */}
       <Text style={styles.subtitle}>Suggested Recipes:</Text>
       <FlatList
-        data={sampleRecipes}
+        data={filteredAndSortedRecipes}
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (
           <View
             style={[
               styles.recipeCard,
-              index < 5 && styles.highlightedCard, // Highlight the top 5
+              index < 5 && styles.highlightedCard, // Highlight top 5 recipes
             ]}
           >
             <Text style={styles.recipeName}>{item.name}</Text>
             <Text style={styles.matchPercentage}>
-              Match: {item.matchPercentage}
+              Match: {item.matchPercentage}%
             </Text>
           </View>
         )}
       />
-      
-      {/* Button to fetch suggestions */}
-      <Button 
-        title="Back"
-        onPress={() => console.log('Fetching recipes...')} 
-      />
+
+      {/* Back Button */}
+      <Button
+        title="Back" />
     </View>
   );
 };
@@ -63,15 +79,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-  },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 20,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    backgroundColor: '#fff',
   },
   subtitle: {
     fontSize: 18,
@@ -90,9 +97,9 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   highlightedCard: {
-    backgroundColor: '#bfdff5', // Light orange for highlighting
+    backgroundColor: '#bfdff5',
     borderWidth: 2,
-    borderColor: '#276fa1', // Darker orange border
+    borderColor: '#276fa1',
   },
   recipeName: {
     fontSize: 16,
