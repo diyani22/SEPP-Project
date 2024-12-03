@@ -1,11 +1,11 @@
 import React from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
-import Home from '../../screens/Home';
+import { StyleSheet, View } from 'react-native';
+import Suggestions from '../../screens/Suggestions';
 
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
-      <Home />
+      <Suggestions />
     </View>
   );
 }

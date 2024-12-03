@@ -1,23 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import recipes from '../recipes.json';
 
 const Recipe = () => {
-  const sampleRecipes = [
-    {
-      id: '1',
-      name: 'Vegetable Stir Fry',
-      ingredients: ['Noodles', 'Onion', 'Garlic', 'Broccoli', 'Pepper', 'Bean Sprouts', 'Peppers', 'Sauce', 'Olive Oil'],
-      instructions: [
-        'Cook the noodles according to package instructions.',
-        'Chop onion, garlic, broccoli and peppers.',
-        'Heat olive oil in a pan and add vegetables.',
-        'Mix the sauce with the cooked noodles and serve.',
-        'Once vegetables are nearly ready, add cooked noodles and stir in sauce.',
-        'Allow all ingredients to cook together for 3 minutes and serve.',
-      ],
-    },
-  ];
-  const recipe = sampleRecipes[0];
+  const recipe = recipes.find((r) => r.id == selectedRecipeID);
 
   return (
     <ScrollView style={styles.container}>
