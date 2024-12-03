@@ -1,26 +1,11 @@
 import React from 'react';
 import { View, Text, FlatList, StyleSheet, Button } from 'react-native';
+import recipes from '../recipes.json';
+import ingredients from '../ingredients.json';
 
 const Suggestions = () => {
-  const sampleRecipes = [
-    { id: '1', name: 'Pasta Primavera', ingredients: ['Pasta', 'Tomatoes', 'Broccoli', 'Olive Oil'] },
-    { id: '2', name: 'Vegetable Stir Fry', ingredients: ['Noodles', 'Onion', 'Garlic', 'Broccoli', 'Pepper'] },
-    { id: '3', name: 'Chicken Curry', ingredients: ['Chicken', 'Curry Powder', 'Onion', 'Garlic', 'Tomatoes'] },
-    { id: '4', name: 'Margarita Pizza', ingredients: ['Pizza Dough', 'Tomato Sauce', 'Mozzarella'] },
-    { id: '5', name: 'Beef Tacos', ingredients: ['Beef', 'Taco Shells', 'Lettuce', 'Cheese'] },
-    { id: '6', name: 'Tomato Soup', ingredients: ['Tomatoes', 'Onion', 'Garlic', 'Cream'] },
-    { id: '7', name: 'Grilled Cheese Sandwich', ingredients: ['Bread', 'Cheese', 'Butter'] },
-    { id: '8', name: 'Avocado Toast', ingredients: ['Avocado', 'Bread', 'Salt', 'Pepper'] },
-    { id: '9', name: 'Shrimp Scampi', ingredients: ['Shrimp', 'Garlic', 'Butter', 'Pasta'] },
-    { id: '10', name: 'Caesar Salad', ingredients: ['Lettuce', 'Croutons', 'Caesar Dressing', 'Parmesan'] },
-    { id: '11', name: 'Vegetarian Chili', ingredients: ['Beans', 'Tomatoes', 'Onion', 'Garlic', 'Chili Powder'] },
-    { id: '12', name: 'Pan-Seared Salmon', ingredients: ['Salmon', 'Lemon', 'Butter', 'Garlic'] },
-    { id: '13', name: 'Breakfast Burrito', ingredients: ['Tortilla', 'Eggs', 'Cheese', 'Sausage'] },
-    { id: '14', name: 'Spaghetti Bolognese', ingredients: ['Spaghetti', 'Tomato Sauce', 'Ground Beef', 'Garlic', 'Onion'] },
-    { id: '15', name: 'Caprese Salad', ingredients: ['Tomatoes', 'Mozzarella', 'Basil', 'Olive Oil'] },
-  ];
 
-  const fridgeItems = ['Tomatoes', 'Onion', 'Garlic', 'Mozzarella', 'Pasta', 'Olive Oil', 'Cheese', 'Bread'];
+  const { fridgeItems } = ingredients;
 
   // Calculate match percentage for each recipe
   const calculateMatchPercentage = (recipe: any) => {
@@ -30,7 +15,7 @@ const Suggestions = () => {
   };
 
   // Filter and sort recipes
-  const filteredAndSortedRecipes = sampleRecipes
+  const filteredAndSortedRecipes = recipes
     .map((recipe) => ({
       ...recipe,
       matchPercentage: calculateMatchPercentage(recipe),
