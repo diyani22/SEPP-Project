@@ -1,0 +1,159 @@
+[
+    {
+      "id": 1,
+      "name": "Pasta Primavera",
+      "ingredients": ["Pasta", "Tomatoes", "Broccoli", "Olive Oil"],
+      "instructions": [
+        "Boil pasta according to package instructions.",
+        "Chop and sauté broccoli in olive oil.",
+        "Mix pasta with tomatoes and cooked broccoli.",
+        "Serve and enjoy!"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Vegetable Stir Fry",
+      "ingredients": ["Noodles", "Onion", "Garlic", "Broccoli", "Pepper"],
+      "instructions": [
+        "Cook noodles according to package instructions.",
+        "Chop and sauté onion, garlic, broccoli, and peppers.",
+        "Mix cooked noodles with the sautéed vegetables.",
+        "Serve warm!"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Chicken Curry",
+      "ingredients": ["Chicken", "Curry Powder", "Onion", "Garlic", "Tomatoes"],
+      "instructions": [
+        "Chop onion and garlic.",
+        "Cook chicken with curry powder until browned.",
+        "Add tomatoes and simmer until chicken is tender.",
+        "Serve with rice or bread."
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Margarita Pizza",
+      "ingredients": ["Pizza Dough", "Tomato Sauce", "Mozzarella"],
+      "instructions": [
+        "Preheat oven to 425°F (220°C).",
+        "Spread tomato sauce on pizza dough.",
+        "Add mozzarella slices on top.",
+        "Bake in the oven for 12-15 minutes."
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Beef Tacos",
+      "ingredients": ["Beef", "Taco Shells", "Lettuce", "Cheese"],
+      "instructions": [
+        "Cook beef in a skillet until browned.",
+        "Fill taco shells with beef, lettuce, and cheese.",
+        "Serve immediately!"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Tomato Soup",
+      "ingredients": ["Tomatoes", "Onion", "Garlic", "Cream"],
+      "instructions": [
+        "Chop tomatoes, onion, and garlic.",
+        "Cook them together in a pot until softened.",
+        "Blend the mixture until smooth and add cream.",
+        "Serve hot."
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Grilled Cheese Sandwich",
+      "ingredients": ["Bread", "Cheese", "Butter"],
+      "instructions": [
+        "Butter two slices of bread on one side.",
+        "Place cheese between the unbuttered sides.",
+        "Grill on a skillet until golden brown."
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Avocado Toast",
+      "ingredients": ["Avocado", "Bread", "Salt", "Pepper"],
+      "instructions": [
+        "Toast bread slices.",
+        "Mash avocado and spread it on toast.",
+        "Season with salt and pepper."
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Shrimp Scampi",
+      "ingredients": ["Shrimp", "Garlic", "Butter", "Pasta"],
+      "instructions": [
+        "Cook pasta according to package instructions.",
+        "Sauté shrimp and garlic in butter until shrimp is pink.",
+        "Mix with pasta and serve."
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Caesar Salad",
+      "ingredients": ["Lettuce", "Croutons", "Caesar Dressing", "Parmesan"],
+      "instructions": [
+        "Chop lettuce and place in a bowl.",
+        "Add croutons, Caesar dressing, and grated Parmesan.",
+        "Toss to combine and serve."
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Vegetarian Chili",
+      "ingredients": ["Beans", "Tomatoes", "Onion", "Garlic", "Chili Powder"],
+      "instructions": [
+        "Chop onion and garlic.",
+        "Cook them with tomatoes and beans.",
+        "Add chili powder and simmer for 20 minutes.",
+        "Serve hot."
+      ]
+    },
+    {
+      "id": 12,
+      "name": "Pan-Seared Salmon",
+      "ingredients": ["Salmon", "Lemon", "Butter", "Garlic"],
+      "instructions": [
+        "Sear salmon in butter until cooked through.",
+        "Add garlic and lemon juice while cooking.",
+        "Serve with your favorite sides."
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Breakfast Burrito",
+      "ingredients": ["Tortilla", "Eggs", "Cheese", "Sausage"],
+      "instructions": [
+        "Scramble eggs and cook sausage.",
+        "Place eggs, sausage, and cheese on a tortilla.",
+        "Wrap and serve."
+      ]
+    },
+    {
+      "id": 14,
+      "name": "Spaghetti Bolognese",
+      "ingredients": ["Spaghetti", "Tomato Sauce", "Ground Beef", "Garlic", "Onion"],
+      "instructions": [
+        "Cook spaghetti according to package instructions.",
+        "Cook ground beef with garlic and onion.",
+        "Mix with tomato sauce and serve over spaghetti."
+      ]
+    },
+    {
+      "id": 15,
+      "name": "Caprese Salad",
+      "ingredients": ["Tomatoes", "Mozzarella", "Basil", "Olive Oil"],
+      "instructions": [
+        "Slice tomatoes and mozzarella.",
+        "Layer with basil leaves on a plate.",
+        "Drizzle with olive oil and serve."
+      ]
+    }
+  ]
+  
