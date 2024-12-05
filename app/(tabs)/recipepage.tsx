@@ -12,7 +12,7 @@ const Recipe = () => {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>{recipe?.name}</Text> {/* Main header title is recipe name */}
+      <Text style={styles.title}>{recipe?.name}</Text>
       
       {/* Ingredients Section */}
       <Text style={styles.subHeader}>Ingredients:</Text>
