@@ -1,18 +1,23 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import recipes from '../recipes.json';
+import recipes from '../../recipes.json';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 
 const Recipe = () => {
+  const router = useRouter();
+  const { selectedRecipeID }: { selectedRecipeID: any } = useLocalSearchParams();
   const recipe = recipes.find((r) => r.id == selectedRecipeID);
+
+  console.log(selectedRecipeID)
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>{recipe.name}</Text> {/* Main header title is recipe name */}
-
+      <Text style={styles.title}>{recipe?.name}</Text> {/* Main header title is recipe name */}
+      
       {/* Ingredients Section */}
       <Text style={styles.subHeader}>Ingredients:</Text>
       <View style={styles.section}>
-        {recipe.ingredients.map((ingredient, index) => (
+        {recipe?.ingredients.map((ingredient, index) => (
           <Text key={index} style={styles.text}>
             - {ingredient}
           </Text>
@@ -22,7 +27,7 @@ const Recipe = () => {
       {/* Instructions Section */}
       <Text style={styles.subHeader}>Instructions:</Text>
       <View style={styles.section}>
-        {recipe.instructions.map((step, index) => (
+        {recipe?.instructions.map((step, index) => (
           <Text key={index} style={styles.text}>
             {index + 1}. {step}
           </Text>
@@ -30,7 +35,7 @@ const Recipe = () => {
       </View>
 
       {/* Back Button */}
-      <TouchableOpacity style={styles.backButton}>
+      <TouchableOpacity style={styles.backButton} onPress={() => router.push('/Suggestions')}>
         <Text style={styles.backButtonText}>BACK</Text>
       </TouchableOpacity>
     </ScrollView>
