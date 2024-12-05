@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-import Suggestions from './Suggestions';
 
 const HomePage = () => {
   const router = useRouter();
