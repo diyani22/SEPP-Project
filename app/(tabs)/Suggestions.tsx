@@ -1,26 +1,12 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet, Button } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, FlatList, StyleSheet, Button, TouchableOpacity, ScrollView } from 'react-native';
 
-const Suggestions = () => {
-  const sampleRecipes = [
-    { id: '1', name: 'Pasta Primavera', ingredients: ['Pasta', 'Tomatoes', 'Broccoli', 'Olive Oil'] },
-    { id: '2', name: 'Vegetable Stir Fry', ingredients: ['Noodles', 'Onion', 'Garlic', 'Broccoli', 'Pepper'] },
-    { id: '3', name: 'Chicken Curry', ingredients: ['Chicken', 'Curry Powder', 'Onion', 'Garlic', 'Tomatoes'] },
-    { id: '4', name: 'Margarita Pizza', ingredients: ['Pizza Dough', 'Tomato Sauce', 'Mozzarella'] },
-    { id: '5', name: 'Beef Tacos', ingredients: ['Beef', 'Taco Shells', 'Lettuce', 'Cheese'] },
-    { id: '6', name: 'Tomato Soup', ingredients: ['Tomatoes', 'Onion', 'Garlic', 'Cream'] },
-    { id: '7', name: 'Grilled Cheese Sandwich', ingredients: ['Bread', 'Cheese', 'Butter'] },
-    { id: '8', name: 'Avocado Toast', ingredients: ['Avocado', 'Bread', 'Salt', 'Pepper'] },
-    { id: '9', name: 'Shrimp Scampi', ingredients: ['Shrimp', 'Garlic', 'Butter', 'Pasta'] },
-    { id: '10', name: 'Caesar Salad', ingredients: ['Lettuce', 'Croutons', 'Caesar Dressing', 'Parmesan'] },
-    { id: '11', name: 'Vegetarian Chili', ingredients: ['Beans', 'Tomatoes', 'Onion', 'Garlic', 'Chili Powder'] },
-    { id: '12', name: 'Pan-Seared Salmon', ingredients: ['Salmon', 'Lemon', 'Butter', 'Garlic'] },
-    { id: '13', name: 'Breakfast Burrito', ingredients: ['Tortilla', 'Eggs', 'Cheese', 'Sausage'] },
-    { id: '14', name: 'Spaghetti Bolognese', ingredients: ['Spaghetti', 'Tomato Sauce', 'Ground Beef', 'Garlic', 'Onion'] },
-    { id: '15', name: 'Caprese Salad', ingredients: ['Tomatoes', 'Mozzarella', 'Basil', 'Olive Oil'] },
-  ];
+import recipes from '../recipes.json';
+import ingredients from '../ingredients.json';
 
-  const fridgeItems = ['Tomatoes', 'Onion', 'Garlic', 'Mozzarella', 'Pasta', 'Olive Oil', 'Cheese', 'Bread'];
+const Suggestions = ({ navigation }) => {
+  const { fridgeItems } = ingredients;
+  const [selectedRecipe, setSelectedRecipe] = useState(null); // State to store the selected recipe
 
   // Calculate match percentage for each recipe
   const calculateMatchPercentage = (recipe: any) => {
@@ -30,7 +16,7 @@ const Suggestions = () => {
   };
 
   // Filter and sort recipes
-  const filteredAndSortedRecipes = sampleRecipes
+  const filteredAndSortedRecipes = recipes
     .map((recipe) => ({
       ...recipe,
       matchPercentage: calculateMatchPercentage(recipe),
@@ -38,33 +24,72 @@ const Suggestions = () => {
     .filter((recipe) => recipe.matchPercentage > 0) // Only include recipes with >0% match
     .sort((a, b) => b.matchPercentage - a.matchPercentage); // Sort descending by match percentage
 
+  // Handle recipe card click
+  const handleRecipeClick = (recipe) => {
+    setSelectedRecipe(recipe); // Set the clicked recipe to the selectedRecipe state
+  };
+
+  // Handle back button click to navigate
+  const handleBackClick = () => {
+    if (selectedRecipe !== null) {
+      setSelectedRecipe(null); // Reset selectedRecipe to null when back button is pressed (go back to list)
+    } else {
+      navigation.goBack(); // Go back to the previous screen (home screen in this case)
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Recipe Suggestions</Text>
+      {/* Recipe List or Recipe Details */}
+      {selectedRecipe === null ? (
+        <View style={styles.recipeListContainer}>
+          <Text style={styles.title}>Recipe Suggestions</Text>
+          <Text style={styles.subtitle}>Suggested Recipes:</Text>
 
-      {/* Recipe List */}
-      <Text style={styles.subtitle}>Suggested Recipes:</Text>
-      <FlatList
-        data={filteredAndSortedRecipes}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item, index }) => (
-          <View
-            style={[
-              styles.recipeCard,
-              index < 5 && styles.highlightedCard, // Highlight top 5 recipes
-            ]}
-          >
-            <Text style={styles.recipeName}>{item.name}</Text>
-            <Text style={styles.matchPercentage}>
-              Match: {item.matchPercentage}%
+          <FlatList
+            data={filteredAndSortedRecipes}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item, index }) => (
+              <TouchableOpacity
+                style={[
+                  styles.recipeCard,
+                  index < 5 && styles.highlightedCard, // Highlight top 5 recipes
+                ]}
+                onPress={() => handleRecipeClick(item)} // Handle card click
+              >
+                <Text style={styles.recipeName}>{item.name}</Text>
+                <Text style={styles.matchPercentage}>
+                  Match: {item.matchPercentage}%
+                </Text>
+              </TouchableOpacity>
+            )}
+          />
+        </View>
+      ) : (
+        // Recipe Details
+        <ScrollView style={styles.detailsContainer}>
+          <Text style={styles.recipeDetailTitle}>Name: {selectedRecipe.name}</Text>
+
+          <Text style={styles.recipeDetailTitle}>Ingredients:</Text>
+          {selectedRecipe.ingredients.map((ingredient, index) => (
+            <Text key={index} style={styles.detailText}>
+              - {ingredient}
             </Text>
-          </View>
-        )}
-      />
+          ))}
 
-      {/* Back Button */}
-      <Button
-        title="Back" />
+          <Text style={styles.recipeDetailTitle}>Instructions:</Text>
+          {selectedRecipe.instructions.map((step, index) => (
+            <Text key={index} style={styles.detailText}>
+              {index + 1}. {step}
+            </Text>
+          ))}
+        </ScrollView>
+      )}
+
+      {/* Back Button at the bottom */}
+      <View style={styles.backButtonContainer}>
+        <Button title={selectedRecipe ? "Back to Recipes" : "Back to Home"} onPress={handleBackClick} />
+      </View>
     </View>
   );
 };
@@ -72,8 +97,12 @@ const Suggestions = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
     backgroundColor: '#f2e9df',
+    justifyContent: 'space-between', // Ensures the back button stays at the bottom
+  },
+  recipeListContainer: {
+    flex: 1,
+    padding: 20,
   },
   title: {
     fontSize: 24,
@@ -108,6 +137,23 @@ const styles = StyleSheet.create({
   matchPercentage: {
     fontSize: 14,
     color: '#888',
+  },
+  detailsContainer: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#f2e9df',
+  },
+  recipeDetailTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  detailText: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  backButtonContainer: {
+    paddingBottom: 20, // Adds padding at the bottom for the button
   },
 });
 
