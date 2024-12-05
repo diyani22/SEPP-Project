@@ -23,9 +23,9 @@ const Suggestions = () => {
   const fridgeItems = ['Tomatoes', 'Onion', 'Garlic', 'Mozzarella', 'Pasta', 'Olive Oil', 'Cheese', 'Bread'];
 
   // Calculate match percentage for each recipe
-  const calculateMatchPercentage = (recipe) => {
+  const calculateMatchPercentage = (recipe: any) => {
     const total = recipe.ingredients.length;
-    const have = recipe.ingredients.filter((ingredient) => fridgeItems.includes(ingredient)).length;
+    const have = recipe.ingredients.filter((ingredient: any) => fridgeItems.includes(ingredient)).length;
     return Math.round((have / total) * 100); // Rounded to nearest integer
   };
 
