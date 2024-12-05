@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, StyleSheet, Button, TouchableOpacity, ScrollView } from 'react-native';
 
-import recipes from '../recipes.json';
-import ingredients from '../ingredients.json';
+import recipes from '../../recipes.json';
+import ingredients from '../../ingredients.json';
 
-const Suggestions = ({ navigation }) => {
+import { useRouter } from 'expo-router';
+
+const Suggestions = ({ navigation }: any) => {
+  const router = useRouter();
   const { fridgeItems } = ingredients;
-  const [selectedRecipe, setSelectedRecipe] = useState(null); // State to store the selected recipe
+  const [selectedRecipe, setSelectedRecipe]: any = useState(null); // State to store the selected recipe
 
   // Calculate match percentage for each recipe
   const calculateMatchPercentage = (recipe: any) => {
@@ -25,23 +28,19 @@ const Suggestions = ({ navigation }) => {
     .sort((a, b) => b.matchPercentage - a.matchPercentage); // Sort descending by match percentage
 
   // Handle recipe card click
-  const handleRecipeClick = (recipe) => {
+  const handleRecipeClick = (recipe: any) => {
     setSelectedRecipe(recipe); // Set the clicked recipe to the selectedRecipe state
+    router.push(`/recipepage?selectedRecipeID=${recipe.id}`);
   };
 
   // Handle back button click to navigate
   const handleBackClick = () => {
-    if (selectedRecipe !== null) {
-      setSelectedRecipe(null); // Reset selectedRecipe to null when back button is pressed (go back to list)
-    } else {
-      navigation.goBack(); // Go back to the previous screen (home screen in this case)
-    }
+    router.push('/Home')
   };
 
   return (
     <View style={styles.container}>
       {/* Recipe List or Recipe Details */}
-      {selectedRecipe === null ? (
         <View style={styles.recipeListContainer}>
           <Text style={styles.title}>Recipe Suggestions</Text>
           <Text style={styles.subtitle}>Suggested Recipes:</Text>
@@ -65,31 +64,11 @@ const Suggestions = ({ navigation }) => {
             )}
           />
         </View>
-      ) : (
-        // Recipe Details
-        <ScrollView style={styles.detailsContainer}>
-          <Text style={styles.recipeDetailTitle}>Name: {selectedRecipe.name}</Text>
-
-          <Text style={styles.recipeDetailTitle}>Ingredients:</Text>
-          {selectedRecipe.ingredients.map((ingredient, index) => (
-            <Text key={index} style={styles.detailText}>
-              - {ingredient}
-            </Text>
-          ))}
-
-          <Text style={styles.recipeDetailTitle}>Instructions:</Text>
-          {selectedRecipe.instructions.map((step, index) => (
-            <Text key={index} style={styles.detailText}>
-              {index + 1}. {step}
-            </Text>
-          ))}
-        </ScrollView>
-      )}
 
       {/* Back Button at the bottom */}
-      <View style={styles.backButtonContainer}>
-        <Button title={selectedRecipe ? "Back to Recipes" : "Back to Home"} onPress={handleBackClick} />
-      </View>
+      <TouchableOpacity style={styles.backButton} onPress={() => router.push('/Home')}>
+        <Text style={styles.backButtonText}>BACK</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -99,10 +78,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f2e9df',
     justifyContent: 'space-between', // Ensures the back button stays at the bottom
+    padding: 20,
   },
   recipeListContainer: {
     flex: 1,
-    padding: 20,
   },
   title: {
     fontSize: 24,
@@ -152,8 +131,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 10,
   },
-  backButtonContainer: {
-    paddingBottom: 20, // Adds padding at the bottom for the button
+  backButton: {
+    marginTop: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: '#276fa1',
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  backButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#fff',
   },
 });
 
