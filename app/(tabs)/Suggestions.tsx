@@ -6,16 +6,16 @@ import ingredients from '../../ingredients.json';
 
 import { useRouter } from 'expo-router';
 
-const Suggestions = ({ navigation }: any) => {
+const Suggestions = ({ }: any) => {
   const router = useRouter();
   const { fridgeItems } = ingredients;
-  const [selectedRecipe, setSelectedRecipe]: any = useState(null); // State to store the selected recipe
+  const [selectedRecipe, setSelectedRecipe]: any = useState(null);
 
   // Calculate match percentage for each recipe
   const calculateMatchPercentage = (recipe: any) => {
     const total = recipe.ingredients.length;
     const have = recipe.ingredients.filter((ingredient: any) => fridgeItems.includes(ingredient)).length;
-    return Math.round((have / total) * 100); // Rounded to nearest integer
+    return Math.round((have / total) * 100);
   };
 
   // Filter and sort recipes
@@ -24,23 +24,23 @@ const Suggestions = ({ navigation }: any) => {
       ...recipe,
       matchPercentage: calculateMatchPercentage(recipe),
     }))
-    .filter((recipe) => recipe.matchPercentage > 0) // Only include recipes with >0% match
-    .sort((a, b) => b.matchPercentage - a.matchPercentage); // Sort descending by match percentage
+    .filter((recipe) => recipe.matchPercentage > 0) // Only include recipes with >0% match percentage
+    .sort((a, b) => b.matchPercentage - a.matchPercentage); // Sort in descending order by match percentage
 
   // Handle recipe card click
   const handleRecipeClick = (recipe: any) => {
-    setSelectedRecipe(recipe); // Set the clicked recipe to the selectedRecipe state
+    setSelectedRecipe(recipe);
     router.push(`/recipepage?selectedRecipeID=${recipe.id}`);
   };
 
-  // Handle back button click to navigate
+  // Handle back button click
   const handleBackClick = () => {
     router.push('/Home')
   };
 
   return (
     <View style={styles.container}>
-      {/* Recipe List or Recipe Details */}
+      {/* List of Suggested Recipes */}
         <View style={styles.recipeListContainer}>
           <Text style={styles.title}>Recipe Suggestions</Text>
           <Text style={styles.subtitle}>Suggested Recipes:</Text>
@@ -52,9 +52,9 @@ const Suggestions = ({ navigation }: any) => {
               <TouchableOpacity
                 style={[
                   styles.recipeCard,
-                  index < 5 && styles.highlightedCard, // Highlight top 5 recipes
+                  index < 5 && styles.highlightedCard,
                 ]}
-                onPress={() => handleRecipeClick(item)} // Handle card click
+                onPress={() => handleRecipeClick(item)}
               >
                 <Text style={styles.recipeName}>{item.name}</Text>
                 <Text style={styles.matchPercentage}>
@@ -65,8 +65,8 @@ const Suggestions = ({ navigation }: any) => {
           />
         </View>
 
-      {/* Back Button at the bottom */}
-      <TouchableOpacity style={styles.backButton} onPress={() => router.push('/Home')}>
+      {/* Back Button */}
+      <TouchableOpacity style={styles.backButton} onPress={() => handleBackClick()}>
         <Text style={styles.backButtonText}>BACK</Text>
       </TouchableOpacity>
     </View>
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f2e9df',
-    justifyContent: 'space-between', // Ensures the back button stays at the bottom
+    justifyContent: 'space-between',
     padding: 20,
   },
   recipeListContainer: {
