@@ -24,12 +24,12 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Install jest-junit
-      run: npm install jest-junit --save-dev
+    - name: Install Expo CLI
+      run: npm install -g expo-cli
 
     - name: Run tests
       run: npm test -- --ci --reporters=default --reporters=jest-junit
 
     - name: Validate Expo project
-      run: expo doctor
+      run: npx expo-doctor
 
