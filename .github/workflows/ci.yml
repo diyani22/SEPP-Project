@@ -39,4 +39,7 @@ jobs:
 
     - name: Validate Expo project
       run: |
-        node -r ./fetch-polyfill.js npx expo-doctor
+        npm install node-fetch@2
+        echo "require('node-fetch'); global.ReadableStream = require('stream').Readable;" > fetch-polyfill.js
+        npx expo-doctor
+
