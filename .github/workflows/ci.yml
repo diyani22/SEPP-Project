@@ -27,13 +27,18 @@ jobs:
     - name: Install Expo CLI
       run: npm install -g expo-cli
 
-    - name: Polyfill fetch and install dependencies for Expo Doctor
+    - name: Check if polyfill is needed
       run: |
-        npm install node-fetch@2
-        echo "require('node-fetch'); global.ReadableStream = require('stream').Readable;" > fetch-polyfill.js
+        if [ "$(npm show expo version)" > "46" ]; then
+          npm install node-fetch@2
+          echo "require('node-fetch'); global.ReadableStream = require('stream').Readable;" > fetch-polyfill.js
+        fi
 
     - name: Run tests
       run: npm test -- --ci --reporters=default --reporters=jest-junit
+
+    - name: Validate Expo project
+      run: node -r ./fetch-polyfill.js npx expo-doctor
 
     - name: Validate Expo project
       run: npx expo-doctor
