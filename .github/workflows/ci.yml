@@ -32,3 +32,4 @@ jobs:
 
     - name: Validate Expo project
       run: npx expo-doctor
+
