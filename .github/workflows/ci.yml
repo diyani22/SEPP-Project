@@ -36,4 +36,5 @@ jobs:
       run: npm test -- --ci --reporters=default --reporters=jest-junit
 
     - name: Validate Expo project
-      run: node -r ./fetch-polyfill.js node_modules/.bin/expo-doctor
+      run: npx expo-doctor
+
