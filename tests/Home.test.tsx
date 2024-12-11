@@ -2,13 +2,13 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react-native';
 import HomePage from '@/app/(tabs)/Home';
 import { useRouter } from 'expo-router';
-import ingredients from '../../ingredients.json';
+import ingredients from '../ingredients.json';
 
 jest.mock('expo-router', () => ({
   useRouter: jest.fn(),
 }));
 
-jest.mock('../../ingredients.json', () => ({
+jest.mock('../ingredients.json', () => ({
   fridgeItems: ['Tomatoes', 'Onion', 'Garlic', 'Mozzarella', 'Pasta'],
 }));
 
@@ -50,7 +50,7 @@ describe('HomePage Component', () => {
     const { getByText, getByTestId } = render(<HomePage />);
 
     const title = screen.getByText('Home');
-    expect(title.props.style).toContainEqual({
+    expect(title.props.style).toMatchObject({
       fontSize: 24,
       fontWeight: 'bold',
       color: '#276fa1',
@@ -58,7 +58,7 @@ describe('HomePage Component', () => {
     });
 
     const button = screen.getByText('What can I make?');
-    expect(button.props.style).toContainEqual({
+    expect(button.props.style).toMatchObject({
       fontSize: 16,
       fontWeight: 'bold',
       color: '#fff',
