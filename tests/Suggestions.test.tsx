@@ -48,12 +48,17 @@ const mockRouter = {
     push: jest.fn(),
 };
 
-describe('Suggestions Component', () => {
-    //set up mock function
-    beforeEach(() => {
-        (useRouter as jest.Mock).mockReturnValue(mockRouter);
-    });
+beforeEach(() => {
+    (useRouter as jest.Mock).mockReturnValue(mockRouter);
+    jest.useFakeTimers();
+});
 
+afterEach(() => {
+    jest.clearAllTimers();
+    jest.clearAllMocks();
+})
+
+describe('Suggestions Component', () => {
     //test to check that recipes are correctly displayed
     it('correctly renders the list of recipes', () => {
         render(<Suggestions />);
