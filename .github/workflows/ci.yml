@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Install Expo CLI
+      run: npm install -g expo-cli
+
+    - name: Check if polyfill is needed
+      run: |
+        if [ "$(npm show expo version)" > "46" ]; then
+          npm install node-fetch@2
+          echo "require('node-fetch'); global.ReadableStream = require('stream').Readable;" > fetch-polyfill.js
+        fi
+
+    - name: Run tests
+      run: npm test -- --ci --reporters=default --reporters=jest-junit
+
+    - name: Validate Expo project
+      run: |
+        npm install node-fetch@2
+        echo "require('node-fetch'); global.ReadableStream = require('stream').Readable;" > fetch-polyfill.js
+        npx expo-doctor
+
