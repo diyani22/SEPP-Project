@@ -37,6 +37,12 @@ jest.mock('../ingredients.json', () => ({
     fridgeItems: ["Tomatoes", "Onion", "Garlic", "Mozzarella", "Pasta", "Olive Oil", "Cheese", "Bread"],
 }));
 
+jest.mock('react-native/Libraries/Utilities/Appearance', () => ({
+    getColorScheme: jest.fn().mockReturnValue('light'), // mock 'light' or 'dark'
+    addChangeListener: jest.fn(),
+    removeChangeListener: jest.fn(),
+  }));
+
 //Define a mock router
 const mockRouter = {
     push: jest.fn(),
