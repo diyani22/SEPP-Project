@@ -6,6 +6,11 @@ import ingredients from '../../ingredients.json';
 
 import { useRouter } from 'expo-router';
 
+import { logEvent } from 'firebase/analytics';
+import { analytics } from '../../firebase';
+import { doc, increment, updateDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
+
 const Suggestions = ({ }: any) => {
   const router = useRouter();
   const { fridgeItems } = ingredients;
@@ -28,10 +33,39 @@ const Suggestions = ({ }: any) => {
     .sort((a, b) => b.matchPercentage - a.matchPercentage); // Sort in descending order by match percentage
 
   // Handle recipe card click
-  const handleRecipeClick = (recipe: any) => {
-    setSelectedRecipe(recipe);
-    router.push(`/recipepage?selectedRecipeID=${recipe.id}`);
-  };
+  const handleRecipeClick = async (recipe: any) => {
+    if (!analytics) {
+      console.warn('Firebase Analytics is not initialized.');
+      return;
+    }
+  
+    const recipeId = String(recipe.id); 
+  
+    try {
+      // Log the recipe card click event to Firebase Analytics
+      await logEvent(analytics, 'recipe_card_click', {
+        screen: 'Suggestions',
+        recipeName: recipe.name,
+        match_percentage: recipe.matchPercentage.toString(),
+        timestamp: Date.now(),
+      });
+  
+      console.log('Event logged: recipe_card_click');
+  
+      // Increment click count of specific recipe in Firestore (metrics, observability)
+      const recipeRef = doc(db, 'recipes', recipeId);
+      await updateDoc(recipeRef, {
+        clickCount: increment(1),
+      });
+  
+      console.log('Click count updated in Firestore');
+  
+      setSelectedRecipe(recipe);
+      router.push(`/recipepage?selectedRecipeID=${recipeId}`);
+    } catch (error) {
+      console.error('Error logging event or updating Firestore:', error);
+    }
+  };  
 
   // Handle back button click
   const handleBackClick = () => {

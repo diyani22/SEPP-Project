@@ -1,11 +1,52 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import ingredients from '../../ingredients.json';
+import { logEvent } from 'firebase/analytics';
+import { analytics } from '../../firebase';
+import { doc, setDoc, getFirestore, increment, updateDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
+import { FirebaseError } from 'firebase/app';
 
 const HomePage = () => {
   const router = useRouter();
   const { fridgeItems } = ingredients;
+
+  const handleButtonClick = async () => {
+    console.log('Button clicked');
+  
+    if (!analytics) {
+      console.warn('Firebase Analytics is not initialized.');
+      return;
+    }
+  
+    try {
+      await logEvent(analytics, 'what_can_i_make_button_click', {
+        itemCount: fridgeItems.length.toString(),
+        screen: 'Home',
+        timestamp: Date.now(),
+      });
+      console.log('Event logged: what_can_i_make_button_click');
+  
+      router.push('/Suggestions');
+      console.log('Navigation to /Suggestions triggered');
+  
+      // Increment Firestore counter (metrics, observability)
+      const clickDocRef = doc(db, 'metrics', 'button_clicks');
+      await updateDoc(clickDocRef, { totalClicks: increment(1) });
+      console.log('Firestore updated: button_clicks incremented');
+  
+    } catch (error) {
+      console.error('Error logging event or updating Firestore:', error);
+  
+      if (error instanceof FirebaseError && error.code === 'not-found') {
+        await setDoc(doc(db, 'metrics', 'button_clicks'), { totalClicks: 1 });
+        console.log('Firestore document created with initial count of 1');
+      } else {
+        console.error('Unexpected Error:', error);
+      }
+    }
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -25,7 +66,7 @@ const HomePage = () => {
       {/* "What can I make?" Button */}
       <TouchableOpacity
         style={styles.toSuggestionsButton}
-        onPress={() => router.push('/Suggestions')}
+        onPress={handleButtonClick} //call the function to log the event and navigate to suggestions page
       >
         <Text style={styles.buttonText}>What can I make?</Text>
       </TouchableOpacity>
