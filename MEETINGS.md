@@ -116,6 +116,44 @@
 - Diya: Simulate databases
 - Diana: Complete implementation of home page
 
+<hr>
+
+# Meeting 7 - 9/12/24
+
+## Attendees
+- Diya
+- Diana
+
+## Agenda
+- Review progress of tasks
+- Discuss written report
+
+## Updates
+- Divided tasks on writing report
+
+## Action Items
+- Diya: Ensure CI/CD pipeline is working and start report
+- Diana: Create docker file and start report
+
+<hr>
+
+# Meeting 8 - 10/12/24
+
+## Attendees
+- Diya
+- Diana
+
+## Agenda
+- Review progress of tasks
+- Discuss implementing observability
+
+## Updates
+- Decide to use Firebase Analytics and Firestore for logging data
+
+## Action Items
+- Diya: Observability and finsish report
+- Diana: Complete testing and finish report
+
 
 
 
