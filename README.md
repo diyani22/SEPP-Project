@@ -19,6 +19,16 @@ This is a prototype for the recipe suggestion feature for the Student Smart Home
    ```bash
    npm start
    ```
+5. Docker pull:
+   ```bash
+   docker pull --platform linux/arm64 dlevyan/recipe-app
+
+   Ensure inplace of "linux/arm64" you use your architecture.
+   ```
+6. Docker run:
+   ```bash
+   docker run -d -p 8081:8081 dlevyan/recipe-app
+   ```
 
 ## Contributing
 To contribute to this repository, create a new branch (naming the branch on the feature being worked on/added), commit your changes and push to your branch. Finally, create a pull request. When creating a pull request, assign one or more team members to review the code.
