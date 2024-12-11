@@ -1,53 +1,75 @@
 name: CI/CD
 
 on:
-    push:
-        branches:
-            - main
-    pull_request:
-        branches:
-            - main
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-    build-and-test:
-        runs-on: ubuntu-latest
+  build-and-test:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Setup Node.js
-              uses: actions/setup-node@v3
-              with:
-                node-version: 23.3.0
-            
-            - name: Install dependencies
-              run: npm install
-            
-            - name: Run tests
-              run: npm test
-            
-            - name: Build for web
-              run: npx expo export
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-            - name: Upload build artifacts
-              uses: actions/upload-artifact@v3
-              with:
-                name: web-build
-                path: dist/
-    
-    deploy:
-        needs: build-and-test
-        runs-on: ubuntu-latest
+      # Step 2: Verify the current directory and list files
+      - name: Verify the current directory and list files
+        run: |
+          pwd  # Print the current working directory
+          ls -al  # List all files in the current directory
+          
+      # Step 3: Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 23.3.0
 
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v3
+      # Step 4: Check permissions of package.json
+      - name: Check permissions of package.json
+        run: ls -l package.json
 
-            - name: Download build artifacts
-              uses: actions/download-artifact@v3
-              with:
-                name: web-build
+      # Step 5: Install dependencies
+      - name: Install dependencies
+        run: npm install
 
-            - name: Deploy on GitHub Pages
-              uses: peaceiris/actions-gh-pages@v3
-              with:
-                github_token: ${{ secrets.GITHUB_TOKEN }}
-                publish_dir: ./dist
+      # Step 6: Run tests
+      - name: Run tests
+        run: npm test
+
+      # Step 7: Build for web
+      - name: Build for web
+        run: npx expo export
+
+      # Step 8: Upload build artifacts
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: web-build
+          path: dist/
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout repository again for deployment step
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Download build artifacts
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: web-build
+
+      # Step 3: Deploy on GitHub Pages
+      - name: Deploy on GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
