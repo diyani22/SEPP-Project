@@ -1,79 +1,67 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { render, screen, fireEvent } from '@testing-library/react-native';
+import HomePage from '@/app/(tabs)/HomePage';
 import { useRouter } from 'expo-router';
 import ingredients from '../../ingredients.json';
 
-const HomePage = () => {
-  const router = useRouter();
-  const { fridgeItems } = ingredients;
+jest.mock('expo-router', () => ({
+  useRouter: jest.fn(),
+}));
 
-  return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>Home</Text>
+jest.mock('../../ingredients.json', () => ({
+  fridgeItems: ['Tomatoes', 'Onion', 'Garlic', 'Mozzarella', 'Pasta'],
+}));
 
-      <Text style={styles.subHeader}>In your fridge:</Text>
-
-      {/* Ingredients List */}
-      <View style={styles.section}>
-        {fridgeItems.map((ingredient, index) => (
-          <Text key={index} style={styles.text}>
-            - {ingredient}
-          </Text>
-        ))}
-      </View>
-
-      {/* "What can I make?" Button */}
-      <TouchableOpacity
-        style={styles.toSuggestionsButton}
-        onPress={() => router.push('/Suggestions')}
-      >
-        <Text style={styles.buttonText}>What can I make?</Text>
-      </TouchableOpacity>
-    </ScrollView>
-  );
+const mockRouter = {
+  push: jest.fn(),
 };
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    backgroundColor: '#f2e9df',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#276fa1',
-  },
-  subHeader: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 15,
-  },
-  section: {
-    minHeight: 500,
-    backgroundColor: '#bfdff5',
-    padding: 20,
-    borderRadius: 5,
-    borderWidth: 2,
-    borderColor: '#276fa1',
-  },
-  text: {
-    fontSize: 30,
-    marginBottom: 5,
-  },
-  toSuggestionsButton: {
-    marginTop: 20,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: '#276fa1',
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-});
+describe('HomePage Component', () => {
+  beforeEach(() => {
+    (useRouter as jest.Mock).mockReturnValue(mockRouter);
+    jest.clearAllMocks();
+  });
 
-export default HomePage;
+  it('renders the title and subheader correctly', () => {
+    render(<HomePage />);
+    expect(screen.getByText('Home')).toBeTruthy();
+    expect(screen.getByText('In your fridge:')).toBeTruthy();
+  });
+
+  it('displays list of fridge items', () => {
+    render(<HomePage />);
+    const fridgeItems = ingredients.fridgeItems;
+
+    fridgeItems.forEach((item) => {
+      expect(screen.getByText(`- ${item}`)).toBeTruthy();
+    });
+  });
+
+  it('navigates to the Suggestions page when button clicked', () => {
+    render(<HomePage />);
+    const button = screen.getByText('What can I make?');
+
+    fireEvent.press(button);
+
+    expect(mockRouter.push).toHaveBeenCalledWith('/Suggestions');
+  });
+
+  it('applies the correct styles to the container and button', () => {
+    const { getByText, getByTestId } = render(<HomePage />);
+
+    const title = screen.getByText('Home');
+    expect(title.props.style).toContainEqual({
+      fontSize: 24,
+      fontWeight: 'bold',
+      color: '#276fa1',
+      marginBottom: 20,
+    });
+
+    const button = screen.getByText('What can I make?');
+    expect(button.props.style).toContainEqual({
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: '#fff',
+    });
+  });
+});
